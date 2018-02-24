@@ -1,0 +1,23 @@
+import java.util.ArrayList;
+// need arraylist to store things into states
+public class project1 
+{
+	public static void main(String[] args)
+	{
+		// this is for the command line
+		String regularExpression = args[0];
+		// this is where we define the arraylist
+		ArrayList<String> kings = new ArrayList<String>();
+		// things needed for arrays
+		String temp = " ";
+		int index = 0;
+		// this is going to be used to identify the regex expressions
+		boolean regexCharacter = false;
+		// to print out command line
+		System.out.println(args[0]);
+		for(int j = 0; j < regularExpression.length(); j++)
+		{
+			if(regularExpression.charAt(i)==)
+		}
+	}
+}
