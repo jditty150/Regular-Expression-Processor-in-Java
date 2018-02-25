@@ -1,0 +1,265 @@
+import java.util.ArrayList;
+// for the arrays
+import java.io.*;
+//
+public class project1
+{
+    public static void main(String[] args)
+    {
+        // this is for the command line
+        String regularExpression = args[0];
+        // need to have an array system to store the regex into the state for further use
+        ArrayList<String> whaatup = new ArrayList<String>();
+        // building temp and index part of the array
+        String temp=" ";
+        int index=0;
+        // to print out command line
+        System.out.println(args[0]);
+        // this is the beginning of the for loop and easier way to set conditions for the regex by using the j as a way to
+        // contact those regex expressions better by using bunch of if and else statements for the regex expressions
+        for(int j = 0; j < regularExpression.length(); j++)
+        {
+            // this is the regex expression [ for the if and else statement to start of and store that into the array
+        	if(regularExpression.charAt(j)=='[')
+            {
+                if(temp!=" ")
+                {
+                	whaatup.add(temp);
+                    temp = regularExpression.substring(j, index = regularExpression.indexOf(']',j)+1);
+                    whaatup.add(temp);
+                    j = index-1;
+                    temp = " ";
+                }
+            }
+            else    
+            if(j != regularExpression.length()-1 && regularExpression.charAt(j+1) == '*')
+            {
+                if(temp !=" ")
+                {
+                	whaatup.add(temp);
+                    temp = regularExpression.substring(j,j+2);
+                    whaatup.add(temp);
+                    temp=" ";
+                }
+            }
+            else    
+            if(j != regularExpression.length()-1 && regularExpression.charAt(j+1) == '+')
+            {
+                if(temp!=" ")
+                {
+                	whaatup.add(temp);
+                    temp = regularExpression.substring(j,j+2);
+                    whaatup.add(temp);
+                    temp=" ";
+                }
+            }
+            else
+            if(regularExpression.charAt(j) != '*' && regularExpression.charAt(j) != '+')    
+            {
+                temp = temp + regularExpression.charAt(j);
+            }
+        }
+        System.out.println(args[1]);
+        BufferedReader bufferReader=null;
+        FileReader fileReader=null;
+        boolean matchingFile=false;
+        int startPoint=0;
+        int endPoint = 1;
+        int lineNumber = 0;
+        try
+        {
+            fileReader = new FileReader(args[1]);
+            bufferReader = new BufferedReader(fileReader);
+            String sky, skyKing = "";
+            while((sky = bufferReader.readLine())!=null && sky.length() != 0)
+            {
+                for(int j =0; j < whaatup.size(); j++)
+                {
+                    skyKing=whaatup.get(j);
+                    if(skyKing.charAt(0) == '[' && skyKing.charAt(skyKing.length()-1) == ']')
+                    {
+                        for(int k=0; k < skyKing.length(); k++)
+                        {
+                            if(sky.contains(String.valueOf(skyKing.charAt(k))))
+                            {
+                                if(j == 0)
+                                {
+                                  startPoint = sky.indexOf(String.valueOf(skyKing.charAt(k)), startPoint);
+                                  endPoint = startPoint +1;
+                                  System.out.println("Starting at: " + startPoint + "Ending at: " + endPoint);
+                                  break;
+                                }
+                                else
+                                {
+                                  if(sky.indexOf(String.valueOf(skyKing.charAt(k)), startPoint) == endPoint)
+                                  {
+                                      endPoint = sky.indexOf(String.valueOf(skyKing.charAt(k)), startPoint) + 1;
+                                      System.out.println("Starting at: " + startPoint + " Ending at: " + endPoint);
+                                      break;
+                                  }
+                                  else
+                                    {
+                                        startPoint = sky.indexOf(String.valueOf(skyKing.charAt(k)), startPoint) +1;
+                                        endPoint = startPoint + 1;
+                                        matchingFile=true;
+                                        System.out.println("Starting at: " + startPoint + " Ending at: " + end);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if(matchingFile)
+                        {
+                            j=0;
+                            matchingFile=false;
+                            continue;
+                        } 
+                        if(endPoint >= sky.length() || startPoint >= sky.length())
+                          {
+                             break;
+                          }
+                    }
+                    else
+                    if(skyKing.length() == 2 && skyKing.charAt(1) == '*')
+                    {
+                        if(sky.contains(String.valueOf(skyKing.charAt(0))))
+                        {
+                            if(j==0)
+                            {
+                                startPoint = sky.indexOf(String.valueOf(skyKing.charAt(0)), startPoint);
+                                endPoint = startPoint;
+                                String keeperDefense = "";
+                                while(sky.charAt(endPoint + 1) == skyKing.charAt(0))
+                                {
+                                    keeperDefense += skyKing.charAt(0);
+                                    endPoint++;
+                                }
+                            }
+                            else
+                            {
+                                 if(sky.indexOf(String.valueOf(skyKing.charAt(0)), endPoint) == endPoint)
+                                 {
+                                     while(sky.charAt(endPoint + 1) == skyKing.charAt(0))
+                                     {
+                                    	 endPoint++;
+                                     }  
+                                 }
+                                 else
+                                 {
+                                      startPoint = sky.indexOf(String.valueOf(skyKing.charAt(0)), endPoint);
+                                      endPoint = startPoint + 1;
+                                      matchingFile=true;
+                                 }
+                            }
+                        }
+                        if(matchingFile)
+                        {
+                            j=0;
+                            matchingFile=false;
+                            continue;
+                        }
+                        if(endPoint >= sky.length() || startPoint >= sky.length())
+                          {
+                               break;
+                          }
+                    }
+                    else
+                    if(skyKing.length() == 2 && skyKing.charAt(1) == '+' )
+                    {
+                        if(sky.contains(String.valueOf(skyKing.charAt(0))))
+                        {
+                          if(j == 0)
+                            {
+                                startPoint = sky.indexOf(String.valueOf(skyKing.charAt(0)), startPoint);
+                                endPoint = startPoint;
+                                String keeperDefense="";
+                                while(sky.charAt(endPoint + 1) == skyKing.charAt(0))
+                                {
+                                    keeperDefense += skyKing.charAt(0);
+                                    endPoint++;
+                                }
+                            }
+                            else
+                            {
+                                if(sky.indexOf(String.valueOf(skyKing.charAt(0)), endPoint) == endPoint)
+                                { 
+                                    while(sky.charAt(endPoint + 1) == skyKing.charAt(0))
+                                    {
+                                    	endPoint++;
+                                    }
+                                }
+                                else
+                                {
+                                    startPoint = sky.indexOf(String.valueOf(skyKing.charAt(0)), endPoint);
+                                    endPoint = startPoint + 1;
+                                    matchingFile=true;     
+                                }
+                            }    
+                        }
+                        else
+                        {
+                           break whaatup;
+                        }
+                        if(matchingFile)
+                        {
+                            j=0;
+                            matchingFile=false;
+                            continue;
+                        }
+                        if(endPoint >= sky.length() || startPoint >= sky.length())
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if(sky.contains(skyKing))
+                        {
+                            if(j == 0)
+                            {
+                            	startPoint = sky.indexOf(skyKing, startPoint);
+                                endPoint= skyKing.length();
+                            }
+                            else
+                            {
+                                int identifyLining = sky.indexOf(skyKing, endPoint)+ skyKing.length();
+                                if(sky.indexOf(skyKing, endPoint) == endPoint)
+                                {
+                                    endPoint = identifyLining;
+                                }
+                                else
+                                {
+                                    startPoint = sky.indexOf(skyKing, endPoint);
+                                    endPoint = identifyLining;
+                                    matchingFile=true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            break whaatup;
+                        }
+                    }
+                     if(matchingFile)
+                     {
+                         j=0;
+                         matchingFile=false;
+                         continue;
+                     }
+                     if(endPoint >= sky.length() || startPoint >= sky.length())
+                     {
+                    	 break;
+                     }        
+                }
+                System.out.println("Position at: "+ sky.substring(startPoint, endPoint));
+                lineNumber++;
+            }
+            fileReader.close();
+            bufferReader.close();
+        }
+        catch(IOException zombie)
+        {
+            zombie.printStackTrace();
+        }
+    }
+}
