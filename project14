@@ -1,0 +1,61 @@
+import java.util.ArrayList;
+// for the arrays
+import java.io.*;
+//
+public class project1
+{
+    public static void main(String[] args)
+    {
+        // this is for the command line
+        String regularExpression = args[0];
+        // need to have an array system to store the regex into the state for further use
+        ArrayList<String> whaatup = new ArrayList<String>();
+        // building temp and index part of the array
+        String temp=" ";
+        int index=0;
+        // to print out command line
+        System.out.println(args[0]);
+        // this is the beginning of the for loop and easier way to set conditions for the regex by using the j as a way to
+        // contact those regex expressions better by using bunch of if and else statements for the regex expressions
+        for(int j = 0; j < regularExpression.length(); j++)
+        {
+            // this is the regex expression [ for the if and else statement to start of and store that into the array
+        	if(regularExpression.charAt(j)=='[')
+            {
+                if(temp!=" ")
+                {
+                	whaatup.add(temp);
+                    temp = regularExpression.substring(j, index = regularExpression.indexOf(']',j)+1);
+                    whaatup.add(temp);
+                    j = index-1;
+                    temp = " ";
+                }
+            }
+            else    
+            if(j != regularExpression.length()-1 && regularExpression.charAt(j+1) == '*')
+            {
+                if(temp !=" ")
+                {
+                	whaatup.add(temp);
+                    temp = regularExpression.substring(j,j+2);
+                    whaatup.add(temp);
+                    temp=" ";
+                }
+            }
+            else    
+            if(j != regularExpression.length()-1 && regularExpression.charAt(j+1) == '+')
+            {
+                if(temp!=" ")
+                {
+                	whaatup.add(temp);
+                    temp = regularExpression.substring(j,j+2);
+                    whaatup.add(temp);
+                    temp=" ";
+                }
+            }
+            else
+            if(regularExpression.charAt(j) != '*' && regularExpression.charAt(j) != '+')    
+            {
+                temp = temp + regularExpression.charAt(j);
+            }
+        }
